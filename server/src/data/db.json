@@ -596,5 +596,62 @@
       "updatedAt": "2026-06-19T11:54:44.733Z"
     }
   ],
-  "sessions": []
+  "sessions": [
+    {
+      "_id": "59acd672-5eeb-490f-b75e-b072eaac64e3",
+      "learnerName": "Guest learner",
+      "scenario": "8cf644f0-1402-4763-9542-02bd2ca0d1dc",
+      "reasoning": "To remember the bag weight, I identified the numerical value 4.5 kg, gave it a descriptive label 'School Bag Weight', and stored it in a Python variable named bag_weight. I chose a float data type because weight can have decimal values, and snake_case naming follows standard Python guidelines (PEP 8).",
+      "promptText": "I am storing a school bag's weight using bag_weight = 4.5. Can you explain if this variable name follows clean Python conventions, and why using a float is better than an integer for measuring weight?",
+      "abstractionMap": [
+        {
+          "keywords": [
+            "if",
+            "when",
+            "unless",
+            "decide",
+            "choose",
+            "condition"
+          ],
+          "pattern": "Decision making",
+          "pythonConcept": "if / elif / else",
+          "explanation": "You are branching based on a condition, which is exactly what conditional statements express."
+        }
+      ],
+      "generatedCode": "temperature = 32\n\nif temperature > 30:\n    print(\"Take action now\")\nelse:\n    print(\"Keep observing\")",
+      "codeExplanation": "The code starts from your natural reasoning and turns it into Python structure: Decision making becomes if / elif / else.",
+      "promptScore": 85,
+      "promptFeedback": [
+        "Include an example input or output to make the prompt testable."
+      ],
+      "reflection": "I noticed that clearly naming variables like bag_weight instead of generic names like x makes code much easier to understand, maintain, and debug.",
+      "misconceptions": [],
+      "masterySignals": [
+        "Recognized decision making",
+        "Prompt maturity is developing"
+      ],
+      "createdAt": "2026-07-21T02:03:39.501Z",
+      "updatedAt": "2026-07-21T02:03:39.501Z"
+    }
+  ],
+  "users": [
+    {
+      "_id": "4f4bd88f-acfc-469f-b359-59829fd5f75f",
+      "username": "shyam ",
+      "email": "neerajagrawal689@gmail.com",
+      "password": "$2b$10$KHgRV6LD.t1qIXkqHLF9g.boYQ71nfVdZ53b4AHbl3ng8fa/fNCSO",
+      "role": "student",
+      "createdAt": "2026-07-20T02:37:12.674Z",
+      "updatedAt": "2026-07-20T02:37:12.674Z"
+    },
+    {
+      "_id": "44b8b409-0b3e-4693-83a4-1af813455f2d",
+      "username": "Neeraj",
+      "email": "ssharma08550@gmail.com",
+      "password": "$2b$10$cROctO4AfrPjiIxKY/wrjO6Dto9MGcI51QG2PdFMKFjXULLUDR5ne",
+      "role": "admin",
+      "createdAt": "2026-07-20T02:37:43.628Z",
+      "updatedAt": "2026-07-20T02:37:43.628Z"
+    }
+  ]
 }

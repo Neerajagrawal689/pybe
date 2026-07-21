@@ -34,4 +34,42 @@ router.get('/', async (_req, res, next) => {
   }
 });
 
+router.get('/students', async (req, res, next) => {
+  try {
+    const [sessions] = await Promise.all([store.listSessions()]);
+    
+    const studentData = {};
+    
+    sessions.forEach(session => {
+      const name = session.learnerName || 'Guest learner';
+      if (!studentData[name]) {
+        studentData[name] = {
+          name,
+          totalSessions: 0,
+          totalPromptScore: 0,
+          uniqueConcepts: new Set()
+        };
+      }
+      studentData[name].totalSessions += 1;
+      studentData[name].totalPromptScore += session.promptScore || 0;
+      if (session.abstractionMap) {
+        session.abstractionMap.forEach(map => {
+          studentData[name].uniqueConcepts.add(map.pythonConcept);
+        });
+      }
+    });
+
+    const students = Object.values(studentData).map(student => ({
+      name: student.name,
+      totalSessions: student.totalSessions,
+      averagePromptScore: student.totalSessions ? Math.round(student.totalPromptScore / student.totalSessions) : 0,
+      conceptsLearned: student.uniqueConcepts.size
+    }));
+
+    res.json(students);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

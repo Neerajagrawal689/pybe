@@ -7,8 +7,22 @@ const dbPath = path.join(__dirname, 'db.json');
 async function ensureDb() {
   try {
     await fs.access(dbPath);
+    // Ensure arrays exist in existing DBs
+    const raw = await fs.readFile(dbPath, 'utf8');
+    const db = JSON.parse(raw);
+    let changed = false;
+    if (!db.users) { db.users = []; changed = true; }
+    if (!db.caseStudies) { 
+      const defaultCaseStudies = require('./caseStudiesData');
+      db.caseStudies = defaultCaseStudies; 
+      changed = true; 
+    }
+    if (changed) {
+      await writeDb(db);
+    }
   } catch {
-    await writeDb({ scenarios: [], sessions: [] });
+    const defaultCaseStudies = require('./caseStudiesData');
+    await writeDb({ scenarios: [], sessions: [], users: [], caseStudies: defaultCaseStudies });
   }
 }
 
@@ -66,6 +80,30 @@ async function addScenario(input) {
   return scenario;
 }
 
+async function updateScenario(id, input) {
+  const db = await readDb();
+  const index = db.scenarios.findIndex((s) => s._id === id);
+  if (index === -1) return null;
+  
+  db.scenarios[index] = {
+    ...db.scenarios[index],
+    ...input,
+    updatedAt: now()
+  };
+  await writeDb(db);
+  return db.scenarios[index];
+}
+
+async function deleteScenario(id) {
+  const db = await readDb();
+  const index = db.scenarios.findIndex((s) => s._id === id);
+  if (index === -1) return false;
+  
+  db.scenarios.splice(index, 1);
+  await writeDb(db);
+  return true;
+}
+
 async function listSessions() {
   const db = await readDb();
   return db.sessions
@@ -87,10 +125,54 @@ async function addSession(input) {
   };
 }
 
+async function getUserByUsername(username) {
+  const db = await readDb();
+  return db.users.find((u) => u.username === username) || null;
+}
+
+async function getUserByEmail(email) {
+  const db = await readDb();
+  return db.users.find((u) => u.email === email) || null;
+}
+
+async function addUser(input) {
+  const db = await readDb();
+  const user = createRecord(input);
+  db.users.push(user);
+  await writeDb(db);
+  return user;
+}
+
+async function listCaseStudies() {
+  const db = await readDb();
+  return db.caseStudies || [];
+}
+
+async function addCaseStudy(input) {
+  const db = await readDb();
+  const newStudy = {
+    id: Date.now(),
+    title: input.title,
+    description: input.description,
+    availableChips: input.availableChips || [],
+    targetConcept: input.targetConcept,
+    targetKeywords: input.targetKeywords || []
+  };
+  
+  if (!db.caseStudies) {
+    db.caseStudies = [];
+  }
+  
+  db.caseStudies.push(newStudy);
+  await writeDb(db);
+  return newStudy;
+}
+
 async function resetData(scenarios) {
   await writeDb({
     scenarios: scenarios.map((scenario) => createRecord(scenario)),
-    sessions: []
+    sessions: [],
+    users: []
   });
 }
 
@@ -98,8 +180,15 @@ module.exports = {
   addScenario,
   addSession,
   getScenario,
+  updateScenario,
+  deleteScenario,
   listScenarios,
   listSessions,
+  getUserByUsername,
+  getUserByEmail,
+  addUser,
+  listCaseStudies,
+  addCaseStudy,
   readDb,
   resetData
 };
