@@ -81,7 +81,7 @@ Then open the local URL shown in the terminal (typically
 - All narrative text, story choices, and pacing were deliberately kept
   short — the goal was a small, focused concept, not full course coverage
   of encapsulation.
-- See `CHANGES.md` for the full list of design decisions and how each
+- See `Walkthrough.md` for the full list of design decisions and how each
   piece of feedback was addressed.
 - Accessibility: respects `prefers-reduced-motion` throughout (disables
   page-turn animation, particle effects, and pulse animations in favor
