@@ -1,7 +1,7 @@
 # Idea Summary
 
-**Name:** Ankit Kumar Prajapati
-**Email:** prajapatiankit0073@gmail.com
+- **Name:** Ankit Kumar Prajapati 
+- **Email:** prajapatiankit0073@gmail.com
 
 ## The Idea: Interactive Iteration Learning Module
 This project is a scenario-driven learning module designed to teach Python loop constructs (`for` and `while` loops). 
